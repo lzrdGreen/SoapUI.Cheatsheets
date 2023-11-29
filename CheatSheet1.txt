@@ -1,0 +1,27 @@
+//Cheat Sheet 1
+//SoapUI 5.7.1
+//Two ways to populate and run XML requests
+//Calculator web service 
+//(http://www.dneonline.com/calculator.asmx?wsdl)
+
+//Subtract
+import com.eviware.soapui.support.GroovyUtils
+def groovyUtils = new GroovyUtils(context) //I'll need it to update operations' code
+//Assuming the test case Custom properties include a and b with velues 5 and 6:
+def a = testRunner.testCase.getPropertyValue("a") //a=5
+def b = testRunner.testCase.getPropertyValue("b") //b=6
+def requestXmlHolder, responseXmlHolder
+
+//get Request as XmlHolder
+requestXmlHolder = groovyUtils.getXmlHolder("Subtract#Request")
+requestXmlHolder["//*:intA"] = a
+requestXmlHolder["//*:intB"] = b
+//update the property value
+requestXmlHolder.updateProperty()
+// run the test step; run(testRunner, context)
+testRunner.testCase.getTestStepByName('Subtract').run(testRunner, context)
+// get the response
+responseXmlHolder = groovyUtils.getXmlHolder("Subtract#Response")
+// get the result value
+log.info responseXmlHolder["//*:SubtractResult"]
+assert responseXmlHolder["//*:SubtractResult"] == '-1'
