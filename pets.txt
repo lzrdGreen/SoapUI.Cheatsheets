@@ -1,0 +1,5 @@
+4096, Laika
+4097, Zhuchka
+4098, Barbos
+4099, Murzik
+5000, Murka
